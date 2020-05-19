@@ -16,7 +16,7 @@ public class MyListsTests extends CoreTestCase {
 
     private static final String
             LOGIN = "Pet792",
-            PASSWORD = "HelpNow1995";
+            PASSWORD = "12345678";
 
     @Test
 
