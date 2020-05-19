@@ -9,8 +9,9 @@ public class MVArticlePageObject extends ArticlePageObject {
     static {
         TITLE = "css:#content h1";
         FOOTER_ELEMENT = "css:footer";
-        OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@id='ca-watch']";
-        OPTIONS_REMOVE_FROM_MY_LIST_BUTTON = "css:[href='/w/index.php?title=Java_(programming_language)&action=unwatch]'";
+        OPTIONS_ADD_TO_MY_LIST_BUTTON = "css:#ca-watch[role='button']";
+        OPTIONS_REMOVE_FROM_MY_LIST_BUTTON = "css:[title='Remove this page from your watchlist']";
+        OPTIONS_HISTORY = "css:[data-event-name='menu.history']";
     }
 
     public MVArticlePageObject(RemoteWebDriver driver){

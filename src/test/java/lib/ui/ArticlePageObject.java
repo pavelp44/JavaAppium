@@ -5,6 +5,8 @@ import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import static lib.ui.AuthorizationPageObject.LOGIN_BUTTON;
+
 public abstract class ArticlePageObject extends MainPageObject {
 
     protected static String
@@ -13,6 +15,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         OPTIONS_BUTTON,
         OPTIONS_ADD_TO_MY_LIST_BUTTON,
         OPTIONS_REMOVE_FROM_MY_LIST_BUTTON,
+        OPTIONS_HISTORY,
         ADD_TO_MY_LIST_OVERLAY,
         MY_LIST_NAME_INPUT,
         MY_LIST_OK_BUTTON,
@@ -36,6 +39,7 @@ public abstract class ArticlePageObject extends MainPageObject {
         } else if (Platform.getInstance().isIOS()) {
             return titleElement.getAttribute("name");
         } else {
+            System.out.println(titleElement.getText());
             return titleElement.getText();
         }
     }
@@ -134,21 +138,30 @@ public abstract class ArticlePageObject extends MainPageObject {
             }
     }
 
-    public void addArticlesToMySaved(){
+    public void addArticlesToMySaved() throws InterruptedException {
 
             if (Platform.getInstance().isMV()){
+                Thread.sleep(2000);
                 removeArticleFromSavedIfItsAdded();
+                Thread.sleep(2000);
+                this.waitForElementAndClick(
+                        OPTIONS_ADD_TO_MY_LIST_BUTTON,
+                        "Cannot find option to add article to reading list",
+                        10);
+
+                Thread.sleep(2000);
+            } else {
+                this.tryClickElementWithFewAttempts(OPTIONS_ADD_TO_MY_LIST_BUTTON,
+                        "Cannot find option to add article to reading list",
+                        5);
             }
-            this.tryClickElementWithFewAttempts(OPTIONS_ADD_TO_MY_LIST_BUTTON,
-                    "Cannot find option to add article to reading list",
-                    5);
         }
 
         public void removeArticleFromSavedIfItsAdded(){
-            if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)) {
+            if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)){
                 this.waitForElementAndClick((OPTIONS_REMOVE_FROM_MY_LIST_BUTTON),
                         "Cannot click button to remove article from saved",
-                        1);
+                        5);
                 this.waitForElementPresent(
                         OPTIONS_ADD_TO_MY_LIST_BUTTON,
                         "Cannot find add to my list button after removing articles"

@@ -13,6 +13,9 @@ abstract public class NavigationUI extends MainPageObject{
     public static String
     MY_LISTS_LINK,
     CLOSE_SYNC,
+    HOME_LINK,
+    HOME_PAGE_TITLE,
+    CANCEL_BUTTON,
     OPEN_NAVIGATION;
 
 
@@ -20,8 +23,7 @@ abstract public class NavigationUI extends MainPageObject{
         super(driver);
     }
 
-    public void clickMyLists()
-    {
+    public void clickMyLists() throws InterruptedException {
         if (Platform.getInstance().isMV()) {
             this.tryClickElementWithFewAttempts(
                     MY_LISTS_LINK,
@@ -34,6 +36,20 @@ abstract public class NavigationUI extends MainPageObject{
                     "Cannot find navigation button to My list",
                     5
             );
+        }
+    }
+
+    public void clickToHome() throws InterruptedException {
+        if (Platform.getInstance().isMV()) {
+            Thread.sleep(3000);
+            this.tryClickElementUntilElementVisible(
+                    HOME_LINK,
+                    HOME_PAGE_TITLE,
+                    "helo",
+                    5
+            );
+        } else {
+            return;
         }
     }
 

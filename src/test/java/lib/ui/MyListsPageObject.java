@@ -82,12 +82,12 @@ public static String
             this.waitForArticleToDisappearByTitle(article_title);
         } else {
             String remove_locator = getRemoveButtonByTitle(article_title);
+            System.out.println(remove_locator);
             this.waitForElementAndClick(
                     remove_locator,
                     "Cannot click button to remove article from my Saved",
                     10);
             driver.navigate().refresh();
-            this.waitForArticleToDisappearByTitle(article_title);
         }
 
     }

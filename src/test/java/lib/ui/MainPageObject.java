@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import lib.Platform;
 
+import static lib.ui.NavigationUI.CANCEL_BUTTON;
 import static org.openqa.selenium.support.ui.ExpectedConditions.frameToBeAvailableAndSwitchToIt;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
 
@@ -262,7 +263,9 @@ public class MainPageObject {
         return getAmountOfElements(locator) > 0;
     }
 
-    public void tryClickElementWithFewAttempts(String locator, String error_message, int amount_of_attempts){
+    public void tryClickElementWithFewAttempts(String locator, String error_message, int amount_of_attempts) throws InterruptedException {
+
+        Thread.sleep(1000);
         int current_attempts = 0;
         boolean need_more_attempts = true;
 
@@ -280,4 +283,44 @@ public class MainPageObject {
         }
     }
 
+
+    public void initSearch() throws Exception{
+        this.tryClickElementUntilElementVisible(
+                "css:#searchIcon",
+                CANCEL_BUTTON,
+                "Cannot find search input",
+                5);
+            Thread.sleep(2000);
+    }
+
+
+    public void tryClickElementUntilElementVisible(String locator, String locator_of_next_element, String error_message, int amount_of_attempts) throws InterruptedException {
+        int current_attempts = 0;
+
+
+        while (true) {
+            try {
+                ++current_attempts;
+                driver.findElement(By.cssSelector(locator.replace("css:", ""))).click();
+                System.out.println("clicked on element " + locator);
+                Thread.sleep(2000);
+                driver.findElement(By.cssSelector(locator_of_next_element.replace("css:", "")));
+
+                if (current_attempts > amount_of_attempts) {
+                    System.out.println("Exceeded amount of attempts");
+                    return;
+                }
+                return;
+            } catch (Exception ex) {
+                System.out.println("Click failed on" + locator + "\nException: " + ex.getMessage());
+                Thread.sleep(2000);
+                if (current_attempts > amount_of_attempts) {
+                    System.out.println("Exceeded amount of attempts");
+                    ++current_attempts;
+                    return;
+                }
+                }
+            }
+        }
 }
+
